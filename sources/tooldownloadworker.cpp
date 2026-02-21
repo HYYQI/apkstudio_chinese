@@ -907,4 +907,159 @@ bool ToolDownloadWorker::installMsi(const QString &msiPath, const QString &insta
         // 在默认安装位置搜索已安装的 Java
         QStringList defaultPaths = {
             "C:/Program Files/Microsoft",
+            "C:/Program Files (x86)/Microsoft",
+            "C:/Program Files/Java",
+            "C:/Program Files (x86)/Java"
+        };
+        
+#ifdef QT_DEBUG
+        qDebug() << "[installMsi] 在路径中搜索 Java：" << defaultPaths;
+#endif
+        
+        // 如果文件系统仍在更新，重试搜索几次
+        for (int retry = 0; retry < 5; retry++) {
+#ifdef QT_DEBUG
+            qDebug() << "[installMsi] 搜索尝试" << (retry + 1) << "/ 5";
+#endif
+            
+            for (const QString &basePath : defaultPaths) {
+                QDir baseDir(basePath);
+#ifdef QT_DEBUG
+                qDebug() << "[installMsi] 检查路径：" << basePath << "存在：" << baseDir.exists();
+#endif
+                
+                if (baseDir.exists()) {
+                    QStringList entries = baseDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+#ifdef QT_DEBUG
+                    qDebug() << "[installMsi] 在" << basePath << "中找到" << entries.size() << "个目录";
+#endif
+                    
+                    for (const QString &entry : entries) {
+#ifdef QT_DEBUG
+                        qDebug() << "[installMsi] 检查条目：" << entry;
+#endif
+                        
+                        if (entry.contains("jdk", Qt::CaseInsensitive) || entry.contains("java", Qt::CaseInsensitive)) {
+                            QString jdkPath = baseDir.absoluteFilePath(entry);
+                            QString javaExe = jdkPath + "/bin/java.exe";
+#ifdef QT_DEBUG
+                            qDebug() << "[installMsi] 找到 JDK 目录：" << jdkPath;
+                            qDebug() << "[installMsi] 检查 Java 可执行文件位置：" << javaExe;
+#endif
+                            
+                            if (QFile::exists(javaExe)) {
+                                // 找到 Java，验证其是否有效可执行文件
+                                QFileInfo info(javaExe);
+#ifdef QT_DEBUG
+                                qDebug() << "[installMsi] 找到 Java 可执行文件，存在：" << info.exists() << "是否为文件：" << info.isFile();
+#endif
+                                
+                                if (info.exists() && info.isFile()) {
+#ifdef QT_DEBUG
+                                    qDebug() << "[installMsi] Java 安装验证成功：" << javaExe;
+#endif
+                                    return true; // 成功安装并找到
+                                }
+                            } else {
+#ifdef QT_DEBUG
+                                qDebug() << "[installMsi] Java 可执行文件未找到：" << javaExe;
+#endif
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (retry < 4) {
+#ifdef QT_DEBUG
+                qDebug() << "[installMsi] 未找到 Java，等待 1 秒后重试...";
+#endif
+                QThread::msleep(1000); // 重试前等待 1 秒
+            }
+        }
+        
+        // 安装后未找到 Java
+#ifdef QT_DEBUG
+        qDebug() << "[installMsi] Java 安装失败 - 所有重试后仍未找到可执行文件";
+        if (exitCode != 0) {
+            qDebug() << "[installMsi] 安装失败，退出代码：" << exitCode;
+            if (exitCode == 1925) {
+                qDebug() << "[installMsi] 错误：此 MSI 安装程序需要管理员权限。";
+                qDebug() << "[installMsi] 请以管理员身份运行 APK Studio 或手动安装 Java。";
+            } else if (exitCode == 1603) {
+                qDebug() << "[installMsi] 错误：安装过程中出现致命错误（退出代码 1603）。";
+            } else if (exitCode == 1619) {
+                qDebug() << "[installMsi] 错误：无法打开安装包（退出代码 1619）。";
+            }
+        }
+#endif
+        return false;
+    }
+    
+    // 对于其他工具，检查退出代码
+    bool success = (exitCode == 0);
+#ifdef QT_DEBUG
+    qDebug() << "[installMsi] 安装结果：" << (success ? "成功" : "失败");
+#endif
+    return success;
+#else
+    return false; // MSI 文件仅适用于 Windows
+#endif
+}
+
+void ToolDownloadWorker::setExecutablePermissions(const QString &path)
+{
+#ifndef Q_OS_WIN
+    QFile file(path);
+    if (file.exists()) {
+        QFile::Permissions perms = file.permissions();
+        perms |= QFile::ExeUser | QFile::ExeGroup | QFile::ExeOther;
+        file.setPermissions(perms);
+    }
+#endif
+}
+
+QString ToolDownloadWorker::getLatestGitHubRelease(const QString &repo, const QString &assetPattern)
+{
+    // 从 GitHub API 获取最新版本
+    QString apiUrl = QString("https://api.github.com/repos/%1/releases/latest").arg(repo);
+    
+    QNetworkAccessManager manager;
+    QNetworkRequest request;
+    request.setUrl(QUrl(apiUrl));
+    request.setRawHeader("User-Agent", "APK Studio");
+    QNetworkReply *reply = manager.get(request);
+    
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+    
+    if (reply->error() != QNetworkReply::NoError) {
+        reply->deleteLater();
+        return QString();
+    }
+    
+    QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+    reply->deleteLater();
+    
+    if (!doc.isObject()) {
+        return QString();
+    }
+    
+    QJsonObject obj = doc.object();
+    QJsonArray assets = obj["assets"].toArray();
+    
+    QRegularExpression pattern(assetPattern, QRegularExpression::CaseInsensitiveOption);
+    
+    for (const QJsonValue &asset : assets) {
+        QJsonObject assetObj = asset.toObject();
+        QString name = assetObj["browser_download_url"].toString();
+        if (pattern.match(name).hasMatch()) {
+            return name;
+        }
+    }
+    
+    return QString();
+}
+
 
