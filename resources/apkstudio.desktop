@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Development;
+Comment=用于逆向工程安卓应用包的开源、跨平台 Qt 集成开发环境
+Exec=apkstudio
+Name=ApkStudio
+Icon=apkstudio
+Terminal=false
+Type=Application

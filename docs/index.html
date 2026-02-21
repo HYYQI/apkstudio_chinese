@@ -1,0 +1,236 @@
+<!doctype html>
+<html class="h-100" lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>
+      APK Studio | 跨平台、开源的安卓逆向工程 IDE
+    </title>
+    <meta
+      name="description"
+      content="一款基于 Qt6 的开源、跨平台集成开发环境，用于逆向工程安卓应用包。它提供友好的 IDE 布局，内置支持 *.smali 代码文件语法高亮的代码编辑器。"
+    />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #2d3748;
+        min-height: 100vh;
+      }
+      .main-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+      .hero-section {
+        background: #667eea;
+        color: white;
+        padding: 1.5rem 1.5rem;
+        text-align: center;
+      }
+      .hero-section img {
+        max-width: 96px;
+        margin-bottom: 0.5rem;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+      .content-section {
+        padding: 1.5rem;
+      }
+      .feature-list {
+        list-style: none;
+        padding: 0;
+      }
+      .feature-list li {
+        padding: 0.25rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+      .feature-list li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #28a745;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+      .badge-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        margin: 0.75rem 0;
+      }
+      .badge-container img {
+        height: 20px;
+      }
+      .section-title {
+        color: #667eea;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #e9ecef;
+        font-size: 1.25rem;
+      }
+      .section-title:first-child {
+        margin-top: 0;
+      }
+      .screenshot {
+        max-width: 100%;
+        border-radius: 6px;
+        margin: 0.75rem 0;
+      }
+      .download-btn {
+        background: #2d3748;
+        border: none;
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: transform 0.2s, box-shadow 0.2s;
+        font-size: 0.9rem;
+      }
+      .download-btn:hover {
+        background: #1a202c;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(45, 55, 72, 0.4);
+        color: white;
+      }
+    </style>
+  </head>
+  <body class="h-100 d-flex">
+    <div class="container my-auto py-2">
+      <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+          <div class="main-container">
+            <!-- 英雄区 -->
+            <div class="hero-section">
+              <img
+                src="https://raw.githubusercontent.com/vaibhavpandeyvpz/apkstudio/master/resources/icon.png"
+                alt="APK Studio"
+              />
+              <h1 class="h2 mb-2">APK Studio</h1>
+              <p class="mb-3" style="font-size: 0.95rem;">
+                一款基于 <a href="https://www.qt.io/" rel="nofollow" style="color: white; text-decoration: underline;">Qt6</a> 的开源、跨平台集成开发环境，用于逆向工程
+                <a href="https://android.com/" rel="nofollow" style="color: white; text-decoration: underline;">安卓</a> 应用包
+              </p>
+              <div class="badge-container justify-content-center">
+                <a href="https://github.com/vaibhavpandeyvpz/apkstudio/actions">
+                  <img src="https://github.com/vaibhavpandeyvpz/apkstudio/workflows/Build/badge.svg" alt="构建状态" />
+                </a>
+                <a href="https://github.com/vaibhavpandeyvpz/apkstudio/releases/latest">
+                  <img src="https://img.shields.io/github/release/vaibhavpandeyvpz/apkstudio.svg" alt="最新版本" />
+                  </a>
+                <a href="https://github.com/vaibhavpandeyvpz/apkstudio/releases">
+                  <img src="https://img.shields.io/github/downloads/vaibhavpandeyvpz/apkstudio/total.svg" alt="下载量" />
+                  </a>
+                <a href="https://github.com/vaibhavpandeyvpz/apkstudio/blob/master/LICENSE">
+                  <img src="https://img.shields.io/github/license/vaibhavpandeyvpz/apkstudio.svg" alt="许可证" />
+                </a>
+              </div>
+              <div class="mt-2">
+                  <a
+                    href="https://github.com/vaibhavpandeyvpz/apkstudio/releases"
+                  class="download-btn"
+                  rel="nofollow"
+                  >
+                  <i class="fas fa-download me-1"></i>下载最新版本
+                </a>
+              </div>
+            </div>
+
+            <!-- 内容区 -->
+            <div class="content-section">
+              <!-- 截图 -->
+              <div class="text-center mb-3">
+                <a href="https://raw.githubusercontent.com/vaibhavpandeyvpz/apkstudio/master/resources/screenshot.png">
+                  <img
+                    src="https://raw.githubusercontent.com/vaibhavpandeyvpz/apkstudio/master/resources/screenshot.png"
+                    alt="APK Studio 截图"
+                    class="screenshot"
+                    />
+                  </a>
+              </div>
+
+              <!-- 功能特性 -->
+              <h2 class="section-title">
+                <i class="fas fa-star me-2"></i>功能特性
+              </h2>
+              <ul class="feature-list">
+                <li>跨平台，支持 <strong>Linux</strong>、<strong>Mac OS X</strong> 和 <strong>Windows</strong></li>
+                <li>反编译/重新编译、签名及安装 APK</li>
+                <li><strong>自动下载和安装工具</strong> - APK Studio 可自动下载并安装所需工具（Java、Apktool、JADX、ADB、Uber APK Signer）</li>
+                <li>内置代码编辑器（*.java; *.smali; *.xml; *.yml），支持语法高亮</li>
+                <li>内置图片（*.gif; *.jpg; *.jpeg; *.png）查看器</li>
+                <li>内置二进制文件十六进制编辑器</li>
+                <li><strong>支持深色/浅色主题</strong> - 原生 Qt 6 主题，与系统集成</li>
+              </ul>
+
+              <!-- 下载说明 -->
+              <h2 class="section-title">
+                <i class="fas fa-download me-2"></i>下载
+              </h2>
+              <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                请前往 <a href="https://github.com/vaibhavpandeyvpz/apkstudio/releases" rel="nofollow">Releases</a> 页面进行下载。
+                </p>
+              <div class="alert alert-info py-2 px-3" role="alert" style="font-size: 0.9rem; margin-bottom: 1rem;">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>注意：</strong> APK Studio 在首次启动时可自动下载并安装所需工具（Java、Apktool、JADX、ADB、Uber APK Signer）。若您希望使用自己安装的版本，可在设置中进行配置。
+              </div>
+
+              <div class="alert alert-warning mt-3 py-2 px-3" role="alert" style="font-size: 0.9rem;">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>注意：</strong> 如果遇到任何问题，请查看 IDE 底部的<strong>控制台</strong>输出，以获取程序实际执行的命令结果。与 APK Studio 相关的问题请在此 <a href="https://github.com/vaibhavpandeyvpz/apkstudio/issues" rel="nofollow">GitHub 仓库</a>报告。请注意，<a href="http://ibotpeaches.github.io/Apktool/" rel="nofollow">apktool</a> 的问题不属于 <strong>APK Studio</strong> 的问题。提交工单前，请先核实问题的具体情况。
+              </div>
+
+              <!-- 页脚 -->
+              <hr class="my-3" />
+              <div class="text-center text-muted" style="font-size: 0.85rem;">
+                <p class="mb-1">
+                  <strong>免责声明：</strong> 与 <a href="http://ibotpeaches.github.io/Apktool/" rel="nofollow">apktool</a> 相同，<strong>APK Studio</strong> 既无意用于盗版，也不用于其他非法用途。它可以用于应用本地化、添加新功能或支持自定义平台、分析应用等等。
+                </p>
+                <p class="mb-0">
+                  由 <a href="https://vaibhavpandey.com/" rel="nofollow">Vaibhav Pandey（VPZ）</a> 及
+                  <a href="https://github.com/vaibhavpandeyvpz/apkstudio/graphs/contributors" rel="nofollow">贡献者</a>们共同开发和维护。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 全局网站标签 (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-67528024-2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-67528024-2");
+    </script>
+  </body>
+</html>
